@@ -8,50 +8,38 @@ const userList = document.getElementById('user-list');
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-
-
-usernameButton.addEventListener('click', () => {
-    const enteredUsername = usernameInput.value.trim();
-    if (enteredUsername !== '') {
-        username = enteredUsername;
-        usernameInputContainer.style.display = 'none';
-        chatContainer.style.display = 'block';
-        socket.emit('username', username); // Send the username to the server
-    }
-});
-
-sendButton.addEventListener('click', () => {
-    const message = messageInput.value;
-    if (message.trim() !== '') {
-        socket.emit('chat-message', { username, message }); // Send both username and message
-        messageInput.value = '';
-    }
-});
-messageInput.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // Prevent newline in input field
-        sendButton.click(); // Simulate a click on the send button
-    }
-});
-// ... Other existing code ...
-
-messageInput.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // Prevent newline in input field
-        sendButton.click(); // Simulate a click on the send button
-    }
-});
-
-// ... Other existing code ...
-
-// Existing code ...
-
-// Select the elements
-const currentUsername = document.getElementById('current-username'); // Added this line
-
-// Existing code ...
+const currentUsername = document.getElementById('current-username');
 
 let username = '';
+
+/// Function to convert text to emoji (case-insensitive)
+function convertToEmoji(text) {
+    const emojiMap = {
+        "rocket": "🚀",
+        "lit": "🔥",
+        "beats": "🎶",
+        "sad": "🥲"
+        // Add more emoji mappings as needed
+    };
+
+    for (const key in emojiMap) {
+        const lowercaseKey = key.toLowerCase();
+        if (text.toLowerCase().includes(lowercaseKey)) {
+            text = text.replace(new RegExp(lowercaseKey, 'gi'), emojiMap[key]);
+        }
+    }
+    return text;
+}
+
+
+// Function to add a new message to the chat
+function addMessageToChat(message) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');
+    messageElement.textContent = message;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
 usernameButton.addEventListener('click', () => {
     const enteredUsername = usernameInput.value.trim();
@@ -60,37 +48,27 @@ usernameButton.addEventListener('click', () => {
         usernameInputContainer.style.display = 'none';
         chatContainer.style.display = 'block';
         socket.emit('username', username);
-        // Display the username
-        currentUsername.textContent = username;
+        currentUsername.textContent = username; // Display the username
     }
 });
-
-// Existing code ...
-
-// ... Existing code ...
 
 sendButton.addEventListener('click', () => {
     const message = messageInput.value.trim();
     if (message !== '') {
         const emojiMessage = convertToEmoji(message); // Convert to emoji
-        socket.emit('message', { username, message: emojiMessage });
+        socket.emit('chat-message', { username, message: emojiMessage });
         messageInput.value = ''; // Clear the input
     }
 });
 
-
-// ... Other existing code ...
+messageInput.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        sendButton.click();
+    }
+});
 
 socket.on('chat-message', data => {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-    messageElement.textContent = `${data.username}: ${data.message}`;
-    chatMessages.appendChild(messageElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    const formattedMessage = `${data.username}: ${data.message}`;
+    addMessageToChat(formattedMessage);
 });
-// Existing code ...
-
-// Function to convert text to emoji
-
-// ... Existing code ...
-
