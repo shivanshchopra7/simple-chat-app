@@ -18,7 +18,13 @@ function convertToEmoji(text) {
         "rocket": "🚀",
         "lit": "🔥",
         "beats": "🎶",
-        "sad": "🥲"
+        "sad": "🥲",
+        "react": "⚛️",
+        "woah": "😲",
+        "hey": "👋",
+        "lol": "😂",
+        "like": "🤍",
+        "congratulations": "🎉",
         // Add more emoji mappings as needed
     };
 
@@ -76,7 +82,7 @@ function handleCommand(command) {
     // Implement different commands based on commandName
     switch (commandName) {
         case "help":
-            addMessageToChat("Available commands: /help, /about, /clear");
+            prompt("Available commands: /help: for available slash commands, /about: about info, /clear: clear the chat, /random: generates a random integer");
             break;
         case "about":
             addMessageToChat("This is a chat app created by [Shivansh Chopra].");
@@ -84,6 +90,10 @@ function handleCommand(command) {
             case "clear":
                 clearChat();
                 break;
+                case "random":
+                    const randomNumber = Math.floor(Math.random() * 100);
+                    addMessageToChat(`Random number: ${randomNumber}`);
+                    break;
         default:
             addMessageToChat("Unknown command. Type /help for available commands.");
             break;
