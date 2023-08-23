@@ -3,20 +3,41 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #f8f8f8;
 }
 
 #chat-container {
     display: flex;
-    border: 5px solid #ccc;
+    flex-direction: column;
+    border: 5px solid #3498db;
     border-radius: 10px;
-    width: 80%;
-    max-width: 900px;
-    background-color: #fff;
+    width: 60%;
+    max-width: 600px;
+    background-color: #ffffff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-height: 100vh;
+}
+
+#username-display {
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #042033;
+    color: #ffffff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#username-input-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f8f8;
 }
 
 #user-list {
@@ -24,21 +45,24 @@ body {
     border-right: 1px solid #ccc;
     padding: 10px;
     overflow-y: auto;
+    background-color: #f0f0f0;
 }
 
 div.message {
-    background-color: #87CEEB;
+    background-color: #3498db;
     color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 8px 12px;
     margin-bottom: 6px;
-    width: 50%;
+    width: 40%;
+    align-self: flex-end;
 }
 
 .user {
     padding: 10px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;
+    background-color: #f0f0f0;
 }
 
 #chat-messages {
@@ -46,23 +70,26 @@ div.message {
     padding: 10px;
     overflow-y: auto;
     max-height: 500px;
+    background-color: #f5f5f5;
 }
 
 #message-input-container {
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 8px 8px;
     border-top: 1px solid #ccc;
+    background-color: #f8f8f8;
 }
 
 #message-input {
-    flex: 1;
-    max-width: 70%;
-    margin-right: 50px; /* Add margin to the right of the input field */
+    width: 60%;
+    padding: 6px;
+    margin-right: 20px;
 }
 
 #send-button {
-    background-color: #007bff;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
@@ -72,24 +99,21 @@ div.message {
 }
 
 #send-button:hover {
-    background-color: #0056b3;
+    background-color: #2184d0;
 }
 
-/* Existing CSS rules ... */
+.uploaded-image {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 5px;
+    margin: 6px 0;
+}
 
-#username-display {
-    text-align: center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ccc;
-    font-weight: bold;
+/* Rest of the styles... */
 
-    /* Responsive styles */
-    @media (max-width: 600px) {
-        padding: 5px;
-        font-size: 14px;
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    #chat-container {
+        width: 90%;
     }
 }
-
-/* Existing CSS rules ... */
-

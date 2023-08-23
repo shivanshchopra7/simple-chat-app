@@ -52,6 +52,61 @@ usernameButton.addEventListener('click', () => {
     }
 });
 
+
+
+sendButton.addEventListener("click", () => {
+    const input = messageInput.value;
+
+    if (input.startsWith("/")) {
+        handleCommand(input);
+    } else {
+        sendMessage(input);
+    }
+
+    // Clear input fields
+    messageInput.value = "";
+    imageInput.value = ""; // Clear image input
+});
+
+function handleCommand(command) {
+    // Remove the leading slash and split the command into parts
+    const parts = command.substr(1).split(" ");
+    const commandName = parts[0].toLowerCase();
+
+    // Implement different commands based on commandName
+    switch (commandName) {
+        case "help":
+            addMessageToChat("Available commands: /help, /about, /clear");
+            break;
+        case "about":
+            addMessageToChat("This is a chat app created by [Shivansh Chopra].");
+            break;
+            case "clear":
+                clearChat();
+                break;
+        default:
+            addMessageToChat("Unknown command. Type /help for available commands.");
+            break;
+    }
+}
+
+function clearChat() {
+    chatMessages.innerHTML = ""; // Clear chat messages
+}
+
+
+function addMessageToChat(message) {
+    // Display messages in the chat
+    const messageContainer = document.createElement("div");
+    messageContainer.className = "message";
+    messageContainer.textContent = message;
+
+    chatMessages.appendChild(messageContainer);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+
+
 sendButton.addEventListener('click', () => {
     const message = messageInput.value.trim();
     if (message !== '') {
@@ -67,6 +122,43 @@ messageInput.addEventListener('keydown', event => {
         sendButton.click();
     }
 });
+const imageInput = document.getElementById("image-input");
+
+sendButton.addEventListener("click", () => {
+    const textMessage = messageInput.value;
+    const imageFile = imageInput.files[0];
+
+    if (textMessage.trim() !== "" || imageFile) {
+        if (textMessage.trim() !== "") {
+            sendMessage(textMessage);
+        }
+
+        if (imageFile) {
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                const imageDataUrl = event.target.result;
+                sendImage(imageDataUrl);
+            };
+
+            reader.readAsDataURL(imageFile);
+        }
+    }
+});
+
+function sendImage(imageDataUrl) {
+    const image = document.createElement("img");
+    image.src = imageDataUrl;
+    image.className = "uploaded-image";
+
+    const messageContainer = document.createElement("div");
+    messageContainer.className = "message";
+    messageContainer.appendChild(image);
+
+    chatMessages.appendChild(messageContainer);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 
 socket.on('chat-message', data => {
     const formattedMessage = `${data.username}: ${data.message}`;
